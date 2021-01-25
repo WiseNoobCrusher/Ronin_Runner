@@ -129,7 +129,7 @@ public class Health : MonoBehaviour
 					wallHazard.MoveTheWall(respawnPos.x - 55);
             }
 			else
-				Debug.LogError("Wall Hazard is missing, how did you even get here with this error?");
+				Debug.LogError("Wall Hazard is missing. But the real question is... how did you even get here with this error?");
 		}
 		else
 			Destroy (gameObject);
