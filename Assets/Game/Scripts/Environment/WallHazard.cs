@@ -10,12 +10,18 @@ public class WallHazard : MonoBehaviour
 {
     ParticleSystem _particleSystem;
 
-    public float gracePeriod;
-    public float damagePeriod;
-    public float initialSpeed;
-    public int damage;
-    public AudioClip hitSound;
-    public string[] effectedTags;
+    [SerializeField]
+    private float gracePeriod;
+    [SerializeField]
+    private float damagePeriod;
+    [SerializeField]
+    private float initialSpeed;
+    [SerializeField]
+    private int damage;
+    [SerializeField]
+    private AudioClip hitSound;
+    [SerializeField]
+    private string[] effectedTags;
 
     // Misc. variables  
     private DealDamage dealDamage;
