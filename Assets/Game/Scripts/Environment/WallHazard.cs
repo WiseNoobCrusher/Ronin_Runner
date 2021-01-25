@@ -258,7 +258,7 @@ public class WallHazard : MonoBehaviour
         stopStartTime = endTime;
     }
 
-    public void SlowDownTheWall(float newSpeed, float time)
+    public void SlowDownTheWall(float time, float newSpeed)
     {
         // Checks if the given speed is slower than the current speed
         if ((newSpeed * Time.deltaTime) < moveSpeed)
