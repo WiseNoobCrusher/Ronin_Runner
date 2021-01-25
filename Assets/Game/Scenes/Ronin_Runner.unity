@@ -4862,11 +4862,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: f4a32d6f5d39b6249b5b47cf4b1e9f54, type: 2}
-  isGlobal: 1
-  blendDistance: 0
-  weight: 1
-  priority: 0
 --- !u!1 &814086378
 GameObject:
   m_ObjectHideFlags: 0
@@ -5254,7 +5249,8 @@ PrefabInstance:
       propertyPath: antialiasingMode
       value: 3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1781270631180820360, guid: ac79453cdfd497e4fb70bd15a2766204, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ac79453cdfd497e4fb70bd15a2766204, type: 3}
 --- !u!1001 &847927570
 PrefabInstance:

@@ -224,12 +224,17 @@ public class WallHazard : MonoBehaviour
 
     public void MoveTheWall(float newX)
     {
-        // Moves the wall by the amount given
-        var sh = gameObject.transform;
-        Vector3 objectPos = gameObject.transform.localPosition;
+        // Moves the wall by the amount given if the given value of x is less or equal to the target's
+        if (newX <= target.transform.localPosition.x)
+        {
+            var sh = gameObject.transform;
+            Vector3 objectPos = gameObject.transform.localPosition;
 
-        objectPos.x = newX;
-        sh.localPosition = objectPos;
+            objectPos.x = newX;
+            sh.localPosition = objectPos;
+        }
+        else
+            Debug.LogError("The value of X given is higher the the value of X of the intended target. Please enter a value of X that is less than the target's.");
     }
 
     public void StopTheWall(float time)
