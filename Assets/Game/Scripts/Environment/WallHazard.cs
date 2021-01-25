@@ -12,7 +12,7 @@ public class WallHazard : MonoBehaviour
 
     public float gracePeriod;
     public float damagePeriod;
-    public float speed;
+    public float initialSpeed;
     public int damage;
     public AudioClip hitSound;
     public string[] effectedTags;
@@ -55,7 +55,7 @@ public class WallHazard : MonoBehaviour
         dealDamage = GetComponent<DealDamage>();
         aSource = GetComponent<AudioSource>();
         startTime = Time.time;
-        moveSpeed = speed * Time.deltaTime;
+        moveSpeed = initialSpeed * Time.deltaTime;
 
         target = GameObject.FindGameObjectWithTag("Player");
 
@@ -150,6 +150,7 @@ public class WallHazard : MonoBehaviour
             {
                 // Checks if target is null
                 elapsedTime = float.Parse(Math.Round(endTime - startTime, 0).ToString());
+                Debug.Log(elapsedTime.ToString());
                 if (target != null)
                 {
                     // Checks if 'tempSec' is 0 or not
@@ -168,10 +169,13 @@ public class WallHazard : MonoBehaviour
                     {
                         /* Checks if the allocated time has passed and if
                            'elapsedTime' does not equal 'tempSec' */
-                        if (elapsedTime % damagePeriod == 0 && elapsedTime != tempSec)
+                        if (elapsedTime != tempSec)
                         {
-                            tempSec = elapsedTime;
-                            dealDamage.Attack(target, damage, 0, 0);
+                            if (elapsedTime % damagePeriod == 0)
+                            {
+                                tempSec = elapsedTime;
+                                dealDamage.Attack(target, damage, 0, 0);
+                            }
                         }
                     }
                 }
@@ -251,7 +255,7 @@ public class WallHazard : MonoBehaviour
     public void SlowDownTheWall(float newSpeed, float time)
     {
         // Checks if the given speed is slower than the current speed
-        if (newSpeed < speed)
+        if ((newSpeed * Time.deltaTime) < moveSpeed)
         {
             // Slows down the wall by a given amount for a given amount of time
             tempSpeed = moveSpeed;
@@ -276,5 +280,11 @@ public class WallHazard : MonoBehaviour
         // Gets the 'slowElapsedTime'
         float output = float.Parse(Math.Round(slowStartTime - endTime).ToString());
         return output;
+    }
+
+    public void SetSpeed(float newSpeed)
+    {
+        // Sets the new speed
+        moveSpeed = newSpeed;
     }
 }
