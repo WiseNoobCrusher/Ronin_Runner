@@ -55,6 +55,9 @@ public class WallHazard : MonoBehaviour
     private float slowTime;
     private float slowStartTime;
 
+    // Pause variables
+    private bool isPaused = false;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -78,115 +81,118 @@ public class WallHazard : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        // If the component 'ParticleSystem' wasn't found, this would be false
-        if (canStart)
+        if (!isPaused)
         {
-            // Checks if the wall can start moving or not
-            if (!startMove)
+            // If the component 'ParticleSystem' wasn't found, this would be false
+            if (canStart)
             {
-                // Checks if the amount of time has passed
-                endTime += Time.deltaTime;
-                elapsedTime = endTime - startTime;
-                if (elapsedTime >= gracePeriod)
+                // Checks if the wall can start moving or not
+                if (!startMove)
                 {
-                    // Allows the wall to start moving
-                    startMove = true;
-                    startTime = endTime;
-                }
-            }
-            else
-            {
-                // Checks if the wall can move (This is for the StopTheWall function)
-                if (!isStopped)
-                {
-                    // Checks if the x value of the wall and player match
-                    bool isValid = true;
-                    if (target != null)
-                        if (transform.localPosition.x >= target.transform.localPosition.x)
-                            isValid = false;
-
-                    // If the x value of the wall and player match, this would be false
-                    if (isValid)
+                    // Checks if the amount of time has passed
+                    endTime += Time.deltaTime;
+                    elapsedTime = endTime - startTime;
+                    if (elapsedTime >= gracePeriod)
                     {
-                        // Moves the wall
-                        var sh = gameObject.transform;
-                        Vector3 objectPos = gameObject.transform.localPosition;
-
-                        objectPos.x += moveSpeed;
-                        sh.localPosition = objectPos;
-                    }
-
-                    // Checks if the wall has been slowed down (This is for the SlowDownTheWall function)
-                    if (isSlowed)
-                    {
-                        // Checks if the allocated amount of time has passed
-                        slowElapsedTime = float.Parse(Math.Round(slowStartTime - endTime).ToString());
-                        if (slowElapsedTime != 0)
-                        {
-                            if (slowElapsedTime % slowTime == 0)
-                            {
-                                // Sets the wall back to regular speed
-                                moveSpeed = tempSpeed;
-                                isSlowed = false;
-                            }
-                        }
+                        // Allows the wall to start moving
+                        startMove = true;
+                        startTime = endTime;
                     }
                 }
                 else
                 {
-                    // Checks if the allocated amount of time has passed
-                    stopElapsedTime = float.Parse(Math.Round(stopStartTime - endTime).ToString());
-                    if (stopElapsedTime != 0)
+                    // Checks if the wall can move (This is for the StopTheWall function)
+                    if (!isStopped)
                     {
-                        if (stopElapsedTime % stopTime == 0)
-                        {
-                            // Allows the wall to move again
-                            var ps = _particleSystem.main;
-                            ps.startColor = Color.black;
+                        // Checks if the x value of the wall and player match
+                        bool isValid = true;
+                        if (target != null)
+                            if (transform.localPosition.x >= target.transform.localPosition.x)
+                                isValid = false;
 
-                            isStopped = false;
+                        // If the x value of the wall and player match, this would be false
+                        if (isValid)
+                        {
+                            // Moves the wall
+                            var sh = gameObject.transform;
+                            Vector3 objectPos = gameObject.transform.localPosition;
+
+                            objectPos.x += moveSpeed;
+                            sh.localPosition = objectPos;
                         }
-                    }
-                }
-            }
 
-            /* Checks if the boolean that determines if the player has 
-               collided with the wall is true or false */
-            if (isTriggerOn)
-            {
-                // Checks if target is null
-                elapsedTime = float.Parse(Math.Round(endTime - startTime, 0).ToString());
-                Debug.Log(elapsedTime.ToString());
-                if (target != null)
-                {
-                    // Checks if 'tempSec' is 0 or not
-                    // 'tempSec' is used to try to stop the player from being damaged twice
-                    if (tempSec == 0)
-                    {
-                        // Checks if the allocated time has passed
-                        if (elapsedTime % damagePeriod == 0)
+                        // Checks if the wall has been slowed down (This is for the SlowDownTheWall function)
+                        if (isSlowed)
                         {
-                            // Sets tempSec and damage the player
-                            tempSec = elapsedTime;
-                            dealDamage.Attack(target, damage, 0, 0);
+                            // Checks if the allocated amount of time has passed
+                            slowElapsedTime = float.Parse(Math.Round(slowStartTime - endTime).ToString());
+                            if (slowElapsedTime != 0)
+                            {
+                                if (slowElapsedTime % slowTime == 0)
+                                {
+                                    // Sets the wall back to regular speed
+                                    moveSpeed = tempSpeed;
+                                    isSlowed = false;
+                                }
+                            }
                         }
                     }
                     else
                     {
-                        /* Checks if the allocated time has passed and if
-                           'elapsedTime' does not equal 'tempSec' */
-                        if (elapsedTime != tempSec)
+                        // Checks if the allocated amount of time has passed
+                        stopElapsedTime = float.Parse(Math.Round(stopStartTime - endTime).ToString());
+                        if (stopElapsedTime != 0)
                         {
-                            if (elapsedTime % damagePeriod == 0)
+                            if (stopElapsedTime % stopTime == 0)
                             {
-                                tempSec = elapsedTime;
-                                dealDamage.Attack(target, damage, 0, 0);
+                                // Allows the wall to move again
+                                var ps = _particleSystem.main;
+                                ps.startColor = Color.black;
+
+                                isStopped = false;
                             }
                         }
                     }
                 }
-                else
-                    Debug.LogError("Target is missing.");
+
+                /* Checks if the boolean that determines if the player has 
+                   collided with the wall is true or false */
+                if (isTriggerOn)
+                {
+                    // Checks if target is null
+                    elapsedTime = float.Parse(Math.Round(endTime - startTime, 0).ToString());
+                    Debug.Log(elapsedTime.ToString());
+                    if (target != null)
+                    {
+                        // Checks if 'tempSec' is 0 or not
+                        // 'tempSec' is used to try to stop the player from being damaged twice
+                        if (tempSec == 0)
+                        {
+                            // Checks if the allocated time has passed
+                            if (elapsedTime % damagePeriod == 0)
+                            {
+                                // Sets tempSec and damage the player
+                                tempSec = elapsedTime;
+                                dealDamage.Attack(target, damage, 0, 0);
+                            }
+                        }
+                        else
+                        {
+                            /* Checks if the allocated time has passed and if
+                               'elapsedTime' does not equal 'tempSec' */
+                            if (elapsedTime != tempSec)
+                            {
+                                if (elapsedTime % damagePeriod == 0)
+                                {
+                                    tempSec = elapsedTime;
+                                    dealDamage.Attack(target, damage, 0, 0);
+                                }
+                            }
+                        }
+                    }
+                    else
+                        Debug.LogError("Target is missing.");
+                }
             }
         }
 
@@ -292,5 +298,10 @@ public class WallHazard : MonoBehaviour
     {
         // Sets the new speed
         moveSpeed = newSpeed;
+    }
+
+    public void SetIsPaused(bool pause)
+    {
+        isPaused = pause;
     }
 }
