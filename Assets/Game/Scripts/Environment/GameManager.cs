@@ -5,13 +5,17 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     // Public Variables
+    // Game Object variables
     public GameObject player;
     public GameObject wall;
     public GameObject pauseMenu;
 
     // Private Variables
+    // Component variables
     private PlayerMove playerMove;
     private WallHazard wallHazard;
+
+    // Paused variables
     private bool isPaused = false;
 
     // Start is called before the first frame update
@@ -48,11 +52,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // This sets the 'isPaused' variable
     public void setIsPaused(bool pause)
     {
         isPaused = pause;
     }
 
+    // This exits the game
     public void ExitGame()
     {
         Application.Quit();
