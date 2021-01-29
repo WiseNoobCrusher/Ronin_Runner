@@ -35,17 +35,21 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Checks if the 'Escape' key was pressed
         if (Input.GetKeyUp(KeyCode.Escape))
             isPaused = !isPaused;
 
+        // Checks if the game is paused
         if (isPaused)
         {
+            // Stops the player, the wall and opens the pause menu
             playerMove.SetCanMove(false);
             wallHazard.SetIsPaused(true);
             pauseMenu.SetActive(true);
         }
         else
         {
+            // Let the player and wall move and closes the pause menu
             playerMove.SetCanMove(true);
             wallHazard.SetIsPaused(false);
             pauseMenu.SetActive(false);
